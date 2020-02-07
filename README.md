@@ -27,3 +27,15 @@ npm run lint
 
 ### Customize configuration
 See [Configuration Reference](https://cli.vuejs.org/config/).
+
+
+### Publication
+```
+npm run build
+```
+```
+firebase deploy --only hosting
+```
+
+### Preview
+See [https://doc-app-a6f3f.firebaseapp.com](https://doc-app-a6f3f.firebaseapp.com).
