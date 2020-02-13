@@ -18,35 +18,63 @@
                 dark
         >
             <v-list
-                    dense
-                    nav
-                    class="px-0 py-0"
+                dense
+                nav
+                class="px-0 py-0"
             >
-                <v-list-item
-                        link
-                        :to="item.link"
-                        v-for="(item, idx) in menuItems"
-                        :key="idx"
-                        class="pl-4 pr-3 mb-0"
+                <!--<v-list-item-->
+                    <!--link-->
+                    <!--:to="item.link"-->
+                    <!--v-for="(item, idx) in menuItems"-->
+                    <!--:key="idx"-->
+                    <!--class="pl-4 pr-3 mb-0"-->
+                <!--&gt;-->
+                    <!--<v-list-item-action-->
+                        <!--class="mr-4"-->
+                    <!--&gt;-->
+                        <!--<v-icon>{{item.icon}}</v-icon>-->
+                    <!--</v-list-item-action>-->
+                    <!--<v-list-item-content>-->
+                        <!--<v-list-item-title>{{item.title}}</v-list-item-title>-->
+                    <!--</v-list-item-content>-->
+                <!--</v-list-item>-->
+                <v-list-group
+                    value="true"
+                    no-action
+                    v-for="(item, idx) in menuItems"
+                    :key="idx"
+                    v-model="item.active"
                 >
-                    <v-list-item-action
-                        class="mr-4"
+                    <template v-slot:activator>
+                        <v-list-item-action
+                            class="ml-2 mr-4"
+                        >
+                            <v-icon>{{item.icon}}</v-icon>
+                        </v-list-item-action>
+                        <v-list-item-content>
+                            <v-list-item-title>{{item.title}}</v-list-item-title>
+                        </v-list-item-content>
+                    </template>
+                    <v-list-item
+                        link
+                        :to="subItem.link"
+                        v-for="subItem in item.items"
+                        :key="subItem.title"
                     >
-                        <v-icon>{{item.icon}}</v-icon>
-                    </v-list-item-action>
-                    <v-list-item-content>
-                        <v-list-item-title>{{item.title}}</v-list-item-title>
-                    </v-list-item-content>
-                </v-list-item>
+                        <v-list-item-content>
+                            <v-list-item-title>{{subItem.title}}</v-list-item-title>
+                        </v-list-item-content>
+                    </v-list-item>
+                </v-list-group>
             </v-list>
         </v-navigation-drawer>
 
         <v-content>
             <v-container
-                    class="fill-height align-items-start"
-                    fluid
+                class="fill-height align-items-start"
+                fluid
             >
-                <router-view />
+              <router-view></router-view>
             </v-container>
         </v-content>
 
@@ -68,48 +96,115 @@
 <script>
 import { db } from './main'
 
+import router from './router/index'
+
+const NotFound = { template: '<p>Страница не найдена</p>' }
+
 export default {
   props: {
     source: String
   },
   data: (vm) => ({
+    currentRoute: window.location.pathname,
     drawer: null,
     initialDark: vm.$vuetify ? vm.$vuetify.theme.dark : false,
     menuItems: [
       {
         icon: 'mdi-view-dashboard',
         title: 'Верстка',
-        link: '/layout'
-      },
-      {
-        icon: 'mdi-folder-upload',
-        title: 'Заливка креативов',
-        link: '/creative'
+        active: true,
+        items: [
+          {
+            title: 'AdCombo',
+            link: '/layout/adc'
+          },
+          {
+            title: 'CTR',
+            link: '/layout/ctr'
+          },
+          {
+            title: 'E-commerce',
+            link: '/layout/ecommerce'
+          }
+        ]
       },
       {
         icon: 'mdi-numeric-2-box-multiple-outline',
         title: 'Second Page',
-        link: '/second-page'
+        items: [
+          {
+            title: 'Подключение',
+            link: '/second-plug'
+          },
+          {
+            title: 'Добавить новое',
+            link: '/second-add'
+          },
+          {
+            title: 'Каталог версий',
+            link: '/second-versions'
+          }
+        ]
       },
       {
         icon: 'mdi-numeric-3-box-multiple-outline',
         title: 'Success Page',
-        link: '/success-page'
+        items: [
+          {
+            title: 'Подключение',
+            link: '/success-plug'
+          },
+          {
+            title: 'Добавить новое',
+            link: '/success-add'
+          },
+          {
+            title: 'Каталог версий',
+            link: '/success-versions'
+          }
+        ]
       },
       {
         icon: 'mdi-file-video',
         title: 'Video',
-        link: '/video'
+        items: [
+          {
+            title: 'Подключение',
+            link: '/video-plug'
+          },
+          {
+            title: 'Добавить новое',
+            link: '/video-add'
+          }
+        ]
       },
       {
         icon: 'mdi-keyboard',
         title: 'Работа с формами',
-        link: '/forms'
+        items: [
+          {
+            title: 'Общие вопросы',
+            link: '/form-others'
+          },
+          {
+            title: 'Плагины',
+            link: '/form-plugin'
+          }
+        ]
       },
       {
         icon: 'mdi-information-outline',
         title: 'Общие вопросы',
-        link: '/others'
+        items: [
+          {
+            title: 'Пресеты',
+            link: '/presets'
+          },
+          {
+            title: 'Ошибки',
+            link: '/errors'
+          }
+        ]
       }
     ],
     miniVariant: true,
@@ -127,11 +222,17 @@ export default {
   created () {
     this.$vuetify.theme.dark = true
   },
+  computed: {
+    ViewComponent () {
+      return router[this.currentRoute] || NotFound
+    }
+  },
   firestore () {
     return {
       templates: db.collection('templates').orderBy('createdAt')
     }
-  }
+  },
+  render (h) { return h(this.ViewComponent) }
 }
 
 </script>
