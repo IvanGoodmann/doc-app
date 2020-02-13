@@ -16,19 +16,27 @@ Vue.use(VueRouter)
 
 const routes = [
   {
+    path: '/login',
+    name: 'login',
+    component: Login
+  },
+  {
     path: '/layout/',
     component: Layout,
     children: [
       {
         path: 'adc',
+        name: 'adc',
         component: LayoutAdc
       },
       {
         path: 'ctr',
+        name: 'ctr',
         component: LayoutCTR
       },
       {
         path: 'ecommerce',
+        name: 'ecommerce',
         component: LayoutEcommerce
       }
     ]
@@ -67,6 +75,7 @@ const routes = [
 
 const router = new VueRouter({
   mode: 'history',
+  base: process.env.BASE_URL,
   routes
 })
 

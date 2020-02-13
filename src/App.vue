@@ -22,22 +22,6 @@
                 nav
                 class="px-0 py-0"
             >
-                <!--<v-list-item-->
-                    <!--link-->
-                    <!--:to="item.link"-->
-                    <!--v-for="(item, idx) in menuItems"-->
-                    <!--:key="idx"-->
-                    <!--class="pl-4 pr-3 mb-0"-->
-                <!--&gt;-->
-                    <!--<v-list-item-action-->
-                        <!--class="mr-4"-->
-                    <!--&gt;-->
-                        <!--<v-icon>{{item.icon}}</v-icon>-->
-                    <!--</v-list-item-action>-->
-                    <!--<v-list-item-content>-->
-                        <!--<v-list-item-title>{{item.title}}</v-list-item-title>-->
-                    <!--</v-list-item-content>-->
-                <!--</v-list-item>-->
                 <v-list-group
                     value="true"
                     no-action
@@ -81,7 +65,9 @@
         <v-footer
             app
         >
-            <div class="current-date">&copy; {{ new Date().getFullYear() }}</div>
+            <div class="current-date">
+                &copy; {{ new Date().getFullYear() }}
+            </div>
             <v-switch
                 v-model="$vuetify.theme.dark"
                 hide-details
@@ -95,11 +81,7 @@
 
 <script>
 import { db } from './main'
-
-import router from './router/index'
-
-const NotFound = { template: '<p>Страница не найдена</p>' }
-
+import { mapGetters } from 'vuex'
 export default {
   props: {
     source: String
@@ -223,9 +205,9 @@ export default {
     this.$vuetify.theme.dark = true
   },
   computed: {
-    ViewComponent () {
-      return router[this.currentRoute] || NotFound
-    }
+    ...mapGetters({
+      user: 'user'
+    })
   },
   firestore () {
     return {

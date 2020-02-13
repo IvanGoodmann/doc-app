@@ -7,7 +7,7 @@ import store from './store'
 import Axios from 'axios'
 import vuetify from '@/plugins/vuetify'
 import { firestorePlugin } from 'vuefire'
-import firebase from 'firebase/app'
+import * as firebase from 'firebase'
 import 'firebase/firestore'
 
 new Vue({
@@ -18,10 +18,21 @@ new Vue({
   render: h => h(App)
 }).$mount('#app')
 
-Vue.use(firestorePlugin)
-firebase.initializeApp({
+const configOptions = {
+  apiKey: 'AIzaSyCUgHHrjAxbehYk8ibR5du5LY5zfidv18Y',
+  authDomain: 'doc-app-a6f3f.firebaseapp.com',
+  databaseURL: 'https://doc-app-a6f3f.firebaseio.com',
   projectId: 'doc-app-a6f3f',
-  databaseURL: 'https://doc-app-a6f3f.firebaseio.com'
+  storageBucket: 'doc-app-a6f3f.appspot.com',
+  messagingSenderId: '889538448677',
+  appId: '1:889538448677:web:79a32c1dba3e492e565ecc'
+}
+
+Vue.use(firestorePlugin)
+firebase.initializeApp(configOptions)
+
+firebase.auth().onAuthStateChanged(user => {
+  store.dispatch('fetchUser', user)
 })
 
 export const db = firebase.firestore()
