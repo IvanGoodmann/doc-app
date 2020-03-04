@@ -5,7 +5,7 @@
         <v-card class="elevation-12">
           <v-toolbar>
             <v-toolbar-title>
-              Вход
+              Регистрация
             </v-toolbar-title>
           </v-toolbar>
           <v-card-text>
@@ -30,10 +30,10 @@
           </v-card-text>
           <v-card-actions>
             <v-btn
-                @click.prevent="login"
+                @click.prevent="signup"
                 :disabled="processing"
             >
-              Войти
+              Зарегестрироваться
             </v-btn>
           </v-card-actions>
         </v-card>
@@ -60,8 +60,8 @@ export default {
     }
   },
   methods: {
-    login () {
-      this.$store.dispatch('SIGNIN', { email: this.email, password: this.password })
+    signup () {
+      this.$store.dispatch('SIGNUP', { email: this.email, password: this.password })
       this.$v.$touch()
     }
   },

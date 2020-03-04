@@ -7,20 +7,19 @@
       <div class="template-text mb-3">
         test1
       </div>
-      <div class="template-code mt-7 mb-7">
-      </div>
-      <div class="template-text mb-3"></div>
-      <div class="template-text mb-3"></div>
-      <div class="template-text mb-3"></div>
-      <div class="template-text mb-3"></div>
-      <div class="template-text mb-3"></div>
+      <div class="template-code mt-7 mb-7" />
+      <div class="template-text mb-3" />
+      <div class="template-text mb-3" />
+      <div class="template-text mb-3" />
+      <div class="template-text mb-3" />
+      <div class="template-text mb-3" />
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: 'layout-adc'
+  name: 'LayoutAdc'
 }
 </script>
 

@@ -1,12 +1,12 @@
 <template>
-    <div>
-        Second Page
-    </div>
+  <div>
+    Second Page
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'second-page'
+  name: 'SecondPage'
 }
 </script>
 

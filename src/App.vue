@@ -1,214 +1,50 @@
 <template>
-    <v-app id="inspire">
-        <v-app-bar
-                app
-                clipped-left
+  <v-app id="inspire">
+    <app-header></app-header>
+    <app-nav></app-nav>
+    <v-content>
+      <v-container
+        class="fill-height align-items-start"
+      >
+        <transition
+            appear
+            mode="in-out"
         >
-            <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
-            <v-toolbar-title>Документация</v-toolbar-title>
-        </v-app-bar>
-        <v-navigation-drawer
-                v-model="drawer"
-                @change="updateRouter($event)"
-                app
-                clipped
-                :expand-on-hover="expandOnHover"
-                :mini-variant="miniVariant"
-                absolute
-                dark
-        >
-            <v-list
-                dense
-                nav
-                class="px-0 py-0"
-            >
-                <v-list-group
-                    value="true"
-                    no-action
-                    v-for="(item, idx) in menuItems"
-                    :key="idx"
-                    v-model="item.active"
-                >
-                    <template v-slot:activator>
-                        <v-list-item-action
-                            class="ml-2 mr-4"
-                        >
-                            <v-icon>{{item.icon}}</v-icon>
-                        </v-list-item-action>
-                        <v-list-item-content>
-                            <v-list-item-title>{{item.title}}</v-list-item-title>
-                        </v-list-item-content>
-                    </template>
-                    <v-list-item
-                        link
-                        :to="subItem.link"
-                        v-for="subItem in item.items"
-                        :key="subItem.title"
-                    >
-                        <v-list-item-content>
-                            <v-list-item-title>{{subItem.title}}</v-list-item-title>
-                        </v-list-item-content>
-                    </v-list-item>
-                </v-list-group>
-            </v-list>
-        </v-navigation-drawer>
+          <router-view />
+        </transition>
+      </v-container>
+    </v-content>
 
-        <v-content>
-            <v-container
-                class="fill-height align-items-start"
-                fluid
-            >
-              <router-view></router-view>
-            </v-container>
-        </v-content>
-
-        <v-footer
-            app
-        >
-            <div class="current-date">
-                &copy; {{ new Date().getFullYear() }}
-            </div>
-            <v-switch
-                v-model="$vuetify.theme.dark"
-                hide-details
-                inset
-                label="Theme Dark"
-                class="mt-0 pt-0"
-            ></v-switch>
-        </v-footer>
-    </v-app>
+    <app-footer></app-footer>
+  </v-app>
 </template>
 
 <script>
 import { db } from './main'
-import { mapGetters } from 'vuex'
+import AppHeader from '@/components/AppHeader'
+import AppFooter from '@/components/AppFooter'
+import AppNav from '@/components/AppNav'
+
 export default {
-  props: {
-    source: String
+  components: {
+    AppHeader,
+    AppFooter,
+    AppNav
   },
   data: (vm) => ({
-    currentRoute: window.location.pathname,
-    drawer: null,
-    initialDark: vm.$vuetify ? vm.$vuetify.theme.dark : false,
-    menuItems: [
-      {
-        icon: 'mdi-view-dashboard',
-        title: 'Верстка',
-        active: true,
-        items: [
-          {
-            title: 'AdCombo',
-            link: '/layout/adc'
-          },
-          {
-            title: 'CTR',
-            link: '/layout/ctr'
-          },
-          {
-            title: 'E-commerce',
-            link: '/layout/ecommerce'
-          }
-        ]
-      },
-      {
-        icon: 'mdi-numeric-2-box-multiple-outline',
-        title: 'Second Page',
-        items: [
-          {
-            title: 'Подключение',
-            link: '/second-plug'
-          },
-          {
-            title: 'Добавить новое',
-            link: '/second-add'
-          },
-          {
-            title: 'Каталог версий',
-            link: '/second-versions'
-          }
-        ]
-      },
-      {
-        icon: 'mdi-numeric-3-box-multiple-outline',
-        title: 'Success Page',
-        items: [
-          {
-            title: 'Подключение',
-            link: '/success-plug'
-          },
-          {
-            title: 'Добавить новое',
-            link: '/success-add'
-          },
-          {
-            title: 'Каталог версий',
-            link: '/success-versions'
-          }
-        ]
-      },
-      {
-        icon: 'mdi-file-video',
-        title: 'Video',
-        items: [
-          {
-            title: 'Подключение',
-            link: '/video-plug'
-          },
-          {
-            title: 'Добавить новое',
-            link: '/video-add'
-          }
-        ]
-      },
-      {
-        icon: 'mdi-keyboard',
-        title: 'Работа с формами',
-        items: [
-          {
-            title: 'Общие вопросы',
-            link: '/form-others'
-          },
-          {
-            title: 'Плагины',
-            link: '/form-plugin'
-          }
-        ]
-      },
-      {
-        icon: 'mdi-information-outline',
-        title: 'Общие вопросы',
-        items: [
-          {
-            title: 'Пресеты',
-            link: '/presets'
-          },
-          {
-            title: 'Ошибки',
-            link: '/errors'
-          }
-        ]
-      }
-    ],
-    miniVariant: true,
-    expandOnHover: true
+    userAuth: false
   }),
-  beforeDestroy () {
-    if (!this.$vuetify) return
-    this.$vuetify.theme.dark = this.initialDark
+  computed: {
+    isUserAuthenticated () {
+      return this.$store.getters.isUserAuthenticated
+    }
   },
   methods: {
     updateRouter (val) {
       this.$router.push(val)
     }
   },
-  created () {
-    this.$vuetify.theme.dark = true
-  },
-  computed: {
-    ...mapGetters({
-      user: 'user'
-    })
-  },
+  watch: {},
   firestore () {
     return {
       templates: db.collection('templates').orderBy('createdAt')

@@ -51,12 +51,18 @@
       "node": true
     },
     "extends": [
-      "plugin:vue/essential",
+      "plugin:vue/strongly-recommended",
       "@vue/standard"
     ],
-    "rules": {},
     "parserOptions": {
       "parser": "babel-eslint"
+    },
+    "rules": {
+      "vue/script-indent": "error",
+      "vue/no-textarea-mustache": "warning",
+      "vue/mustache-interpolation-spacing": "warning",
+      "vue/no-multi-spaces": "warning",
+      "vue/comma-dangle": "error"
     }
   },
   "browserslist": [

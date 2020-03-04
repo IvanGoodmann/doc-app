@@ -4,7 +4,9 @@ import Layout from '../views/layouts/Layout.vue'
 import LayoutAdc from '../views/layouts/LayoutAdc.vue'
 import LayoutCTR from '../views/layouts/LayoutCTR.vue'
 import LayoutEcommerce from '../views/layouts/LayoutEcommerce.vue'
+import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
+import Signup from '../views/Signup.vue'
 import Creative from '../views/Creative.vue'
 import SecondPage from '../views/SecondPage.vue'
 import SuccessPage from '../views/SuccessPage.vue'
@@ -16,9 +18,19 @@ Vue.use(VueRouter)
 
 const routes = [
   {
+    path: '/',
+    name: 'home',
+    component: Home
+  },
+  {
     path: '/login',
     name: 'login',
     component: Login
+  },
+  {
+    path: '/signup',
+    name: 'signup',
+    component: Signup
   },
   {
     path: '/layout/',

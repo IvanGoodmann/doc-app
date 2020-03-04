@@ -1,12 +1,12 @@
 <template>
-    <div>
-        Others questions
-    </div>
+  <div>
+    Others questions
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'others'
+  name: 'Others'
 }
 </script>
 

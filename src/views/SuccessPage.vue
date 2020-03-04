@@ -1,12 +1,12 @@
 <template>
-    <div>
-        Success Page
-    </div>
+  <div>
+    Success Page
+  </div>
 </template>
 
 <script>
 export default {
-  name: 'success-page'
+  name: 'SuccessPage'
 }
 </script>
 

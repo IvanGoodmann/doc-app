@@ -1,14 +1,15 @@
 <template>
   <div>
-    Creative
+    This is Home page
   </div>
 </template>
 
 <script>
 export default {
-  name: 'Creative'
+
 }
 </script>
+
 <style scoped>
 
 </style>
